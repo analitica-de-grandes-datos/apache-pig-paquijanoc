@@ -14,14 +14,20 @@ $ pig -x local -f pregunta.pig
 -- Carga el archivo TSV
 data = LOAD 'data.tsv' USING PigStorage('\t') AS (col1: chararray, col2: chararray, col3: int);
 
--- Ordena los datos por la tercera columna en orden ascendente
-sorted_data = ORDER data BY col3 ASC;
+-- Agrega un número de rango a cada registro basado en la tercera columna
+ranked_data = RANK data BY col3;
 
--- Obtiene los cinco valores más pequeños de la tercera columna
-top_values = TOP sorted_data 5;
+-- Filtra los registros con un rango menor o igual a 5
+filtered_data = FILTER ranked_data BY $0 <= 5;
+
+-- Ordena los datos por el rango ascendente
+sorted_data = ORDER filtered_data BY $0;
+
+-- Proyecta solo la tercera columna
+result = FOREACH sorted_data GENERATE col3;
 
 -- Almacena los resultados en formato CSV
-STORE top_values INTO 'output' USING PigStorage(',');
+STORE result INTO 'output' USING PigStorage(',');
 
 -- Muestra los resultados en la consola
-DUMP top_values;
+DUMP result;
