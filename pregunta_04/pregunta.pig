@@ -50,5 +50,8 @@ result = FOREACH (LIMIT data 10) GENERATE driverId, truckId, eventTime;
 -- Ordena los resultados por driverId, truckId y eventTime
 sorted_result = ORDER result BY driverId, truckId, eventTime;
 
+-- Almacena los resultados en formato CSV
+STORE sorted_result INTO 'output' USING PigStorage(',');
+
 -- Muestra los resultados en la consola
 DUMP sorted_result;
