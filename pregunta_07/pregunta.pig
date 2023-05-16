@@ -24,5 +24,5 @@ table = FOREACH data GENERATE col1, SIZE(col2) AS col2_count, SIZE(col3) AS col3
 sorted_table = ORDER table BY col1, col2_count, col3_count;
 
 -- Paso 5: Escribir resultado en carpeta "output" y mostrar el resultado
-STORE sorted_table INTO 'output7_13' USING PigStorage(',');
+STORE sorted_table INTO 'output' USING PigStorage(',');
 DUMP sorted_table;
