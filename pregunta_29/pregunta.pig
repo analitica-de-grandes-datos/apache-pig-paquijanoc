@@ -33,4 +33,19 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+-- Paso 1: Leer archivo
+data = LOAD 'data.csv' USING PigStorage(',') AS (id: int, firstname: chararray, lastname: chararray, birthday: chararray, color: chararray, number: int);
+
+-- Paso 2: Manipulación de fechas
+formatted_data = FOREACH data GENERATE birthday,
+                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'yyyy-MM-dd') AS fecha,
+                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'MMM') AS mes_abreviado,
+                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'MM') AS mes_numero,
+                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'M') AS mes_sin_cero;
+
+-- Paso 3: Escribir resultado en carpeta "output"
+STORE formatted_data INTO 'output' USING PigStorage(',');
+
+-- Mostrar resultado
+DUMP formatted_data;
 

@@ -21,4 +21,17 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+-- Paso 1: Leer archivo
+data = LOAD 'data.csv' USING PigStorage(',') AS (firstname: chararray, color: chararray);
 
+-- Paso 2: Filtrar los registros que cumplen con la condición WHERE
+filtered_data = FILTER data BY color MATCHES '.*[aeiou]$';
+
+-- Paso 3: Proyectar las columnas firstname y color
+result = FOREACH filtered_data GENERATE firstname, color;
+
+-- Paso 4: Escribir resultado en carpeta "output"
+STORE result INTO 'output' USING PigStorage(',');
+
+-- Mostrar resultado
+DUMP result;

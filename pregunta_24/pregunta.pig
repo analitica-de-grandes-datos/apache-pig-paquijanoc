@@ -18,5 +18,15 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+-- Paso 1: Leer archivo
+data = LOAD 'data.csv' USING PigStorage(',') AS (id: int, firstname: chararray, lastname: chararray, birthday: chararray, color: chararray, number: int);
 
+-- Paso 2: Aplicar la función REGEX_EXTRACT para extraer el segundo componente de la fecha de cumpleaños
+result = FOREACH data GENERATE REGEX_EXTRACT(birthday, '(....-..-..)', 2) AS extracted_component;
+
+-- Paso 3: Escribir resultado en carpeta "output"
+STORE result INTO 'output' USING PigStorage(',');
+
+-- Mostrar resultado
+DUMP result;
 
