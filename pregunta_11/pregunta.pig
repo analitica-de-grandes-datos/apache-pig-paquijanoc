@@ -32,4 +32,17 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+-- Paso 1: Leer archivo
+data = LOAD 'data.csv' USING PigStorage(',') AS (col1: chararray, col2: chararray, col3: chararray);
 
+-- Paso 2: Generar relación con apellidos y sus variantes en mayúsculas y minúsculas
+relation = FOREACH data GENERATE col3 AS apellido, UPPER(col3) AS apellido_mayusculas, LOWER(col3) AS apellido_minusculas;
+
+-- Paso 3: Ordenar por apellido en orden alfabético
+sorted_relation = ORDER relation BY apellido;
+
+-- Paso 4: Escribir resultado en carpeta "output"
+STORE sorted_relation INTO 'output' USING PigStorage(',');
+
+-- Mostrar resultado
+DUMP sorted_relation;
