@@ -31,7 +31,7 @@ filtered_data = FILTER data BY color MATCHES 'blue|green';
 result = FOREACH filtered_data GENERATE firstname, color;
 
 -- Paso 4: Escribir resultado en carpeta "output"
-STORE result INTO 'output21' USING PigStorage(',');
+STORE result INTO 'output' USING PigStorage(',');
 
 -- Mostrar resultado
 DUMP result;

@@ -38,8 +38,7 @@ data = LOAD 'data.csv' USING PigStorage(',') AS (id: int, firstname: chararray, 
 
 -- Paso 2: Manipulación de fechas
 formatted_data = FOREACH data GENERATE birthday,
-                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'yyyy-MM-dd') AS fecha,
-                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'MMM') AS mes_abreviado,
+                        LOWER(ToString(ToDate(birthday, 'yyyy-MM-dd'), 'MMM')) AS mes_abreviado,
                         ToString(ToDate(birthday, 'yyyy-MM-dd'), 'MM') AS mes_numero,
                         ToString(ToDate(birthday, 'yyyy-MM-dd'), 'M') AS mes_sin_cero;
 
@@ -48,4 +47,3 @@ STORE formatted_data INTO 'output' USING PigStorage(',');
 
 -- Mostrar resultado
 DUMP formatted_data;
-

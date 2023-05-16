@@ -21,16 +21,16 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
--- Paso 1: Leer archivo
-data = LOAD 'data.csv' USING PigStorage(',') AS (firstname: chararray, color: chararray);
+-- Paso 1: Leer el archivo
+data = LOAD 'data.csv' USING PigStorage(',') AS (id: int, firstname: chararray, lastname: chararray, birthday: chararray, color: chararray, number: int);
 
--- Paso 2: Filtrar los registros que cumplen con la condición WHERE
-filtered_data = FILTER data BY color MATCHES '.*n.*';
+-- Paso 2: Filtrar por color verde
+green_data = FILTER data BY color == 'verde';
 
--- Paso 3: Proyectar las columnas firstname y color
-result = FOREACH filtered_data GENERATE firstname, color;
+-- Paso 3: Proyectar nombre y color
+result = FOREACH green_data GENERATE firstname, color;
 
--- Paso 4: Escribir resultado en carpeta "output"
+-- Paso 4: Escribir el resultado en la carpeta "output"
 STORE result INTO 'output' USING PigStorage(',');
 
 -- Mostrar resultado

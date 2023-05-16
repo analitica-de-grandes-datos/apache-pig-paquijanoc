@@ -38,11 +38,10 @@ data = LOAD 'data.csv' USING PigStorage(',') AS (id: int, firstname: chararray, 
 
 -- Paso 2: Manipulación de fechas
 formatted_data = FOREACH data GENERATE birthday,
-                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'yyyy-MM-dd') AS fecha,
                         ToString(ToDate(birthday, 'yyyy-MM-dd'), 'dd') AS dia,
                         ToString(ToDate(birthday, 'yyyy-MM-dd'), 'd') AS dia_sin_cero,
-                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'E') AS dia_semana_abreviado,
-                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'EEEE') AS dia_semana_completo;
+                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'E', 'ES') AS dia_semana_abreviado,
+                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'EEEE', 'ES') AS dia_semana_completo;
 
 -- Paso 3: Escribir resultado en carpeta "output"
 STORE formatted_data INTO 'output' USING PigStorage(',');

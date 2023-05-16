@@ -29,7 +29,7 @@ filtered_data = FILTER data BY color == 'blue' AND firstname MATCHES '^Z.*';
 result = FOREACH filtered_data GENERATE firstname, color;
 
 -- Paso 4: Escribir resultado en carpeta "output"
-STORE result INTO 'output' USING PigStorage(',');
+STORE result INTO 'output' USING PigStorage(' ');
 
 -- Mostrar resultado
 DUMP result;
