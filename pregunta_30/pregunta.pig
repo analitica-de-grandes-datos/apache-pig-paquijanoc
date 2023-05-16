@@ -40,12 +40,31 @@ data = LOAD 'data.csv' USING PigStorage(',') AS (id: int, firstname: chararray, 
 formatted_data = FOREACH data GENERATE birthday,
                         ToString(ToDate(birthday, 'yyyy-MM-dd'), 'dd') AS dia,
                         ToString(ToDate(birthday, 'yyyy-MM-dd'), 'd') AS dia_sin_cero,
-                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'E', 'ES') AS dia_semana_abreviado,
-                        ToString(ToDate(birthday, 'yyyy-MM-dd'), 'EEEE', 'ES') AS dia_semana_completo;
+                        CASE ToString(ToDate(birthday, 'yyyy-MM-dd'), 'u')
+                            WHEN '1' THEN 'lun'
+                            WHEN '2' THEN 'mar'
+                            WHEN '3' THEN 'mie'
+                            WHEN '4' THEN 'jue'
+                            WHEN '5' THEN 'vie'
+                            WHEN '6' THEN 'sab'
+                            WHEN '7' THEN 'dom'
+                            ELSE '-'
+                        END AS dia_semana_abreviado,
+                        CASE ToString(ToDate(birthday, 'yyyy-MM-dd'), 'u')
+                            WHEN '1' THEN 'lunes'
+                            WHEN '2' THEN 'martes'
+                            WHEN '3' THEN 'miércoles'
+                            WHEN '4' THEN 'jueves'
+                            WHEN '5' THEN 'viernes'
+                            WHEN '6' THEN 'sábado'
+                            WHEN '7' THEN 'domingo'
+                            ELSE '-'
+                        END AS dia_semana_completo;
 
 -- Paso 3: Escribir resultado en carpeta "output"
 STORE formatted_data INTO 'output' USING PigStorage(',');
 
 -- Mostrar resultado
 DUMP formatted_data;
+
 

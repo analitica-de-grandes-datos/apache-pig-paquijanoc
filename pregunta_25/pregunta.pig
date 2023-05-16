@@ -26,7 +26,7 @@ data = LOAD 'data.csv' USING PigStorage(',') AS (id: int, firstname: chararray, 
 result = FOREACH data GENERATE (INDEXOF(firstname, 'a') == -1 ? '-1' : (chararray)(INDEXOF(firstname, 'a'))) AS first_a_position;
 
 -- Paso 3: Escribir el resultado en la carpeta "output"
-STORE result INTO 'output25v1' USING PigStorage(',');
+STORE result INTO 'output' USING PigStorage(',');
 
 -- Mostrar resultado
 DUMP result;
