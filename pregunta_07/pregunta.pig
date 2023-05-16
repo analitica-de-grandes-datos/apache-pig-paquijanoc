@@ -14,22 +14,15 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
--- Carga el archivo TSV
-data = LOAD 'data.tsv' USING PigStorage('\t') AS (col1: chararray, col2: bag{t: tuple(letter: chararray)}, col3: chararray);
+-- Paso 1: Leer Archivo
+data = LOAD 'data.tsv' AS (col1: chararray, col2: bag{}, col3: map[]);
 
--- Calcula la cantidad de elementos en la columna 2
-col2_count = FOREACH data GENERATE col1, SIZE(col2) AS col2_count;
+-- Paso 2 y 3: Generar tabla con la primera columna, cantidad de elementos en col2 y col3
+table = FOREACH data GENERATE col1, SIZE(col2) AS col2_count, SIZE(col3) AS col3_count;
 
--- Calcula la cantidad de elementos en la columna 3
-col3_count = FOREACH data GENERATE col1, SIZE(TOKENIZE(REPLACE(col3, '[', ''), ',')) AS col3_count;
+-- Paso 4: Ordenar tabla por col1, col2_count, col3_count
+sorted_table = ORDER table BY col1, col2_count, col3_count;
 
--- Combina las columnas y ordena los resultados
-result = JOIN col2_count BY col1, col3_count BY col1;
-result = FOREACH result GENERATE col2_count::col1 AS col1, col2_count::col2_count AS col2_count, col3_count::col3_count AS col3_count;
-result = ORDER result BY col1, col2_count, col3_count;
-
--- Almacena los resultados en formato CSV
-STORE result INTO 'output' USING PigStorage(',');
-
--- Muestra los resultados en la consola
-DUMP result;
+-- Paso 5: Escribir resultado en carpeta "output" y mostrar el resultado
+STORE sorted_table INTO 'output7_13' USING PigStorage(',');
+DUMP sorted_table;
