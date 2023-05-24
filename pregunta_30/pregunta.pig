@@ -53,10 +53,10 @@ formatted_data = FOREACH data GENERATE birthday,
                         CASE ToString(ToDate(birthday,'yyyy-MM-dd'), 'EEE')
                             WHEN 'Mon' THEN 'lunes'
                             WHEN 'Tue' THEN 'martes'
-                            WHEN 'Wed' THEN 'miércoles'
+                            WHEN 'Wed' THEN 'miercoles'
                             WHEN 'Thu' THEN 'jueves'
                             WHEN 'Fri' THEN 'viernes'
-                            WHEN 'Sat' THEN 'sábado'
+                            WHEN 'Sat' THEN 'sabado'
                             WHEN 'Sun' THEN 'domingo'
                             ELSE '-'
                         END AS dia_semana_completo;
