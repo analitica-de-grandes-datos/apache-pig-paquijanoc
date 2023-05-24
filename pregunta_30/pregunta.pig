@@ -40,24 +40,24 @@ data = LOAD 'data.csv' USING PigStorage(',') AS (id: int, firstname: chararray, 
 formatted_data = FOREACH data GENERATE birthday,
                         ToString(ToDate(birthday, 'yyyy-MM-dd'), 'dd') AS dia,
                         ToString(ToDate(birthday, 'yyyy-MM-dd'), 'd') AS dia_sin_cero,
-                        CASE ToString(ToDate(birthday, 'yyyy-MM-dd'), 'u')
-                            WHEN '1' THEN 'lun'
-                            WHEN '2' THEN 'mar'
-                            WHEN '3' THEN 'mie'
-                            WHEN '4' THEN 'jue'
-                            WHEN '5' THEN 'vie'
-                            WHEN '6' THEN 'sab'
-                            WHEN '7' THEN 'dom'
+                        CASE ToString(ToDate(birthday, 'yyyy-MM-dd'), 'EEE')
+                            WHEN 'monday' THEN 'lun'
+                            WHEN 'tuesday' THEN 'mar'
+                            WHEN 'wednesday' THEN 'mie'
+                            WHEN 'thursday' THEN 'jue'
+                            WHEN 'friday' THEN 'vie'
+                            WHEN 'saturday' THEN 'sab'
+                            WHEN 'sunday' THEN 'dom'
                             ELSE '-'
                         END AS dia_semana_abreviado,
-                        CASE ToString(ToDate(birthday, 'yyyy-MM-dd'), 'u')
-                            WHEN '1' THEN 'lunes'
-                            WHEN '2' THEN 'martes'
-                            WHEN '3' THEN 'miércoles'
-                            WHEN '4' THEN 'jueves'
-                            WHEN '5' THEN 'viernes'
-                            WHEN '6' THEN 'sábado'
-                            WHEN '7' THEN 'domingo'
+                        CASE ToString(ToDate(birthday, 'yyyy-MM-dd'), 'EEE')
+                            WHEN 'monday' THEN 'lunes'
+                            WHEN 'tuesday' THEN 'martes'
+                            WHEN 'wednesday' THEN 'miércoles'
+                            WHEN 'thursday' THEN 'jueves'
+                            WHEN 'friday' THEN 'viernes'
+                            WHEN 'saturday' THEN 'sábado'
+                            WHEN 'sunday' THEN 'domingo'
                             ELSE '-'
                         END AS dia_semana_completo;
 
