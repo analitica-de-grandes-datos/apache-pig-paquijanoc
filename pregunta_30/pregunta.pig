@@ -40,24 +40,24 @@ data = LOAD 'data.csv' USING PigStorage(',') AS (id: int, firstname: chararray, 
 formatted_data = FOREACH data GENERATE birthday,
                         ToString(ToDate(birthday, 'yyyy-MM-dd'), 'dd') AS dia,
                         ToString(ToDate(birthday, 'yyyy-MM-dd'), 'd') AS dia_sin_cero,
-                        CASE ToString(ToDate(birthday, 'yyyy-MM-dd'), 'EEE')
-                            WHEN 'monday' THEN 'lun'
-                            WHEN 'tuesday' THEN 'mar'
-                            WHEN 'wednesday' THEN 'mie'
-                            WHEN 'thursday' THEN 'jue'
-                            WHEN 'friday' THEN 'vie'
-                            WHEN 'saturday' THEN 'sab'
-                            WHEN 'sunday' THEN 'dom'
+                        CASE ToString(ToDate(birthday,'yyyy-MM-dd'), 'EEE')
+                            WHEN 'Mon' THEN 'lun'
+                            WHEN 'Tue' THEN 'mar'
+                            WHEN 'Wed' THEN 'mie'
+                            WHEN 'Thu' THEN 'jue'
+                            WHEN 'Fri' THEN 'vie'
+                            WHEN 'Sat' THEN 'sab'
+                            WHEN 'Sun' THEN 'dom'
                             ELSE '-'
                         END AS dia_semana_abreviado,
-                        CASE ToString(ToDate(birthday, 'yyyy-MM-dd'), 'EEE')
-                            WHEN 'monday' THEN 'lunes'
-                            WHEN 'tuesday' THEN 'martes'
-                            WHEN 'wednesday' THEN 'miércoles'
-                            WHEN 'thursday' THEN 'jueves'
-                            WHEN 'friday' THEN 'viernes'
-                            WHEN 'saturday' THEN 'sábado'
-                            WHEN 'sunday' THEN 'domingo'
+                        CASE ToString(ToDate(birthday,'yyyy-MM-dd'), 'EEE')
+                            WHEN 'Mon' THEN 'lunes'
+                            WHEN 'Tue' THEN 'martes'
+                            WHEN 'Wed' THEN 'miércoles'
+                            WHEN 'Thu' THEN 'jueves'
+                            WHEN 'Fri' THEN 'viernes'
+                            WHEN 'Sat' THEN 'sábado'
+                            WHEN 'Sun' THEN 'domingo'
                             ELSE '-'
                         END AS dia_semana_completo;
 
@@ -66,5 +66,3 @@ STORE formatted_data INTO 'output' USING PigStorage(',');
 
 -- Mostrar resultado
 DUMP formatted_data;
-
-
