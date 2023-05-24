@@ -19,4 +19,14 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+-- Paso 1: Leer archivo
+data = LOAD 'data.csv' USING PigStorage(',') AS (id: int, firstname: chararray, lastname: chararray, birthday: chararray, color: chararray, number: int);
 
+-- Paso 2: Obtener la posición de la subcadena 'ia' en firstname
+result = FOREACH data GENERATE INDEXOF(firstname, 'ia') AS position;
+
+-- Paso 3: Escribir resultado en carpeta "output"
+STORE result INTO 'output' USING PigStorage(',');
+
+-- Mostrar resultado
+DUMP result;

@@ -31,4 +31,14 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+-- Paso 1: Leer archivo
+data = LOAD 'data.csv' USING PigStorage(',') AS (col1: chararray, col2: chararray, col3: chararray);
 
+-- Paso 2: Generar salida concatenando nombre y apellido con "@"
+result = FOREACH data GENERATE CONCAT(col2, '@', col3);
+
+-- Paso 3: Escribir resultado en carpeta "output"
+STORE result INTO 'output' USING PigStorage(',');
+
+-- Mostrar resultado
+DUMP result;

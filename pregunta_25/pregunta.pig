@@ -19,4 +19,16 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+--- Paso 1: Leer el archivo
+data = LOAD 'data.csv' USING PigStorage(',') AS (id: int, firstname: chararray, lastname: chararray, birthday: chararray, color: chararray, number: int);
+
+-- Paso 2: Calcular la posición de la primera "a" en cada nombre
+result = FOREACH data GENERATE (INDEXOF(firstname, 'a') == -1 ? '-1' : (chararray)(INDEXOF(firstname, 'a'))) AS first_a_position;
+
+-- Paso 3: Escribir el resultado en la carpeta "output"
+STORE result INTO 'output' USING PigStorage(',');
+
+-- Mostrar resultado
+DUMP result;
+
 

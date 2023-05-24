@@ -26,4 +26,17 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+-- Paso 1: Leer archivo
+data = LOAD 'data.csv' USING PigStorage(',') AS (col1: chararray, col2: chararray, col3: chararray);
 
+-- Paso 2: Filtrar los apellidos que empiezan por las letras 'd' a 'k'
+filtered_data = FILTER data BY (col3 >= 'D' AND col3 <= 'L');
+
+-- Paso 3: Proyectar solo la columna de apellidos
+apellidos = FOREACH filtered_data GENERATE col3;
+
+-- Paso 4: Escribir resultado en carpeta "output"
+STORE apellidos INTO 'output' USING PigStorage(',');
+
+-- Mostrar resultado
+DUMP apellidos;
